@@ -1,6 +1,6 @@
 <?php
 
-namespace Teblig\Plivo\Laravel\Facade;
+namespace Treblig\Plivo\Laravel\Facade;
 
 use Illuminate\Support\Facades\Facade;
 
