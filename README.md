@@ -1,5 +1,10 @@
 # Plivo API Library
 
+## TODO
+
+- Full Plivo API integration (including callbacks from Plivo for logging)
+- Documentation
+
 ## Minimum Requirements
 
 - php 7.1+
@@ -10,7 +15,7 @@
 
 ## Usage
 
-
+Coming Soon
 
 ## Laravel
 
@@ -24,7 +29,8 @@ running very quickly.
 
 | Route | Name | Method | Parameters
 | ----- | ---- | ------ | ----------
-| /plivo/send/call | plivo.outbound.call | POST | sender => Your Plivo phone number, recipient => The person that should receive the call. (optional) forward => A number to use after connecting the original call. Useful for outbound calls via sales reps.  
+| /plivo/send/call | plivo.outbound.call | POST | sender => Your Plivo phone number, recipient => The person that should receive the call. (optional) forward => A number to use after connecting the original call. Useful for outbound calls via sales reps.
+| /plivo/receive/call | plivo.receive.call | POST | The callback response from Plivo. This method fires a `CallAnswered` event.  
 
 ### Events
 | Event Name | Arguments | What you should do

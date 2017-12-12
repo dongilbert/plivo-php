@@ -4,10 +4,10 @@ namespace Treblig\Plivo;
 
 use Plivo\RestAPI;
 use Treblig\Plivo\Exceptions\InvalidMethodException;
+use Treblig\Plivo\Exceptions\InvalidTypeException;
 use Treblig\Plivo\Response\AnsweredCall;
 use Treblig\Plivo\Response\Call;
 use Treblig\Plivo\Response\Factory as ResponseFactory;
-use Treblig\Plivo\Laravel\Events\CallInitiated;
 
 class Plivo
 {
@@ -33,6 +33,7 @@ class Plivo
      * @return Call
      *
      * @throws InvalidMethodException
+     * @throws InvalidTypeException
      */
     public function call(array $args): Call
     {
@@ -41,6 +42,10 @@ class Plivo
 
     /**
      * @param $data JSON string of the call data from Plivo
+     *
+     * @throws InvalidTypeException
+     *
+     * @return AnsweredCall
      */
     public function handleCallAnswer($data): AnsweredCall
     {
@@ -54,6 +59,9 @@ class Plivo
      * @return object
      *
      * @throws InvalidMethodException
+     * @throws InvalidTypeException
+     *
+     * @return mixed
      */
     private function request($plivoMethod, array $args)
     {

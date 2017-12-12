@@ -11,6 +11,13 @@ class Factory
         'answered_call' => AnsweredCall::class,
     ];
 
+    /**
+     * @param $type
+     * @param $data
+     *
+     * @return mixed
+     * @throws InvalidTypeException
+     */
     public static function make($type, $data)
     {
         if (!array_key_exists($type, static::$map)) {
