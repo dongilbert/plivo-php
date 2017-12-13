@@ -8,10 +8,12 @@ use Plivo;
 use Illuminate\Routing\Controller;
 use Treblig\Plivo\Laravel\Events\CallAnswered;
 use Treblig\Plivo\Laravel\Events\CallInitiated;
+use Treblig\Plivo\Laravel\Events\RecordingReceived;
+use Treblig\Plivo\Response\Factory as ResponseFactory;
 
 class PlivoController extends Controller
 {
-    public function call(Request $request)
+    public function call(Request $request, int $id = null)
     {
         $args = [
             'from' => $request->get('sender'),
@@ -19,7 +21,7 @@ class PlivoController extends Controller
             'answer_url' => route(
                 'plivo.outbound.callback',
                 [
-                    'forward' => $request->get('forward', null)
+                    'id' => $id
                 ]
             ),
         ];
@@ -32,16 +34,29 @@ class PlivoController extends Controller
     /**
      * @return Response an XML Formatted Response
      */
-    public function outboundCallback(Request $request, $forward = null)
+    public function outboundCallback(Request $request, int $id = null)
     {
-        $data = $request->all();
+        $answeredCall = ResponseFactory::make('answered_call', $request->all());
 
-        $answeredCall = Plivo::handleCallAnswer($data);
+        $answeredCall->setEntityId($id);
 
-        $event = new CallAnswered($answeredCall, $forward);
+        $event = new CallAnswered($answeredCall);
 
         event($event);
 
         return $event->getResponseXml();
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $uuid
+     */
+    public function receiveRecording(Request $request, int $id = null)
+    {
+        $recording = ResponseFactory::make('recording', $request->all());
+
+        $recording->setEntityId($id);
+
+        event(new RecordingReceived($recording));
     }
 }

@@ -5,17 +5,17 @@ Route::group([
     'as' => 'plivo.',
 ], function () {
     Route::post(
-        '/send/call',
+        '/send/call/{id?}',
         '\\Treblig\\Plivo\\Laravel\\Http\\Controllers\\PlivoController@call'
-    )->name('outbound.call');
-
-    Route::get(
-        '/outbound/callback/{forward?}',
-        '\\Treblig\\Plivo\\Laravel\\Http\\Controllers\\PlivoController@outboundCallback'
-    )->name('outbound.callback')->where(['forward' => '[0-9]+']);
+    )->name('outbound.call')->where(['id' => '[0-9]+']);
 
     Route::post(
-        '/receive/call/{forward?}',
+        '/receive/call/{id?}',
         '\\Treblig\\Plivo\\Laravel\\Http\\Controllers\\PlivoController@outboundCallback'
-    )->name('outbound.callback')->where(['forward' => '[0-9]+']);
+    )->name('outbound.callback')->where(['id' => '[0-9]+']);
+
+    Route::post(
+        '/receive/recording/{id?}',
+        '\\Treblig\\Plivo\\Laravel\\Http\\Controllers\\PlivoController@receiveRecording'
+    )->name('recording.receive')->where(['id' => '[0-9]+']);
 });

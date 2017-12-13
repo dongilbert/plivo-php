@@ -22,6 +22,11 @@ class Call
     protected $api_id;
 
     /**
+     * @var int
+     */
+    protected $entityId;
+
+    /**
      * Call constructor.
      *
      * @param array $data
@@ -33,21 +38,58 @@ class Call
         $this->api_id = $data['api_id'] ?? '';
     }
 
+    public function toArray()
+    {
+        return [
+            'message' => $this->message,
+            'request_uuid' => $this->request_uuid,
+            'api_id' => $this->api_id,
+        ];
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setEntityId($id)
+    {
+        $this->entityId = $id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEntityId(): int
+    {
+        return $this->entityId;
+    }
+
+    /**
+     * @return string
+     */
     public function getMessage(): string
     {
         return $this->message;
     }
 
+    /**
+     * @return string
+     */
     public function getRequestUuid(): string
     {
         return $this->request_uuid;
     }
 
+    /**
+     * @return string
+     */
     public function getApiId(): string
     {
         return $this->api_id;
     }
 
+    /**
+     * @return bool
+     */
     public function didFire(): bool
     {
         return $this->getMessage() === static::FIRED;

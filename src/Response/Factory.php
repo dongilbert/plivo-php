@@ -9,6 +9,7 @@ class Factory
     private static $map = [
         'make_call' => Call::class,
         'answered_call' => AnsweredCall::class,
+        'recording' => Recording::class,
     ];
 
     /**

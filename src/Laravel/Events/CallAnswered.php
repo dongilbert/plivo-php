@@ -12,11 +12,6 @@ class CallAnswered
     private $call;
 
     /**
-     * @var null|integer
-     */
-    private $forwardToNumber;
-
-    /**
      * @var string
      */
     private $responseXml;
@@ -26,27 +21,30 @@ class CallAnswered
      *
      * @param AnsweredCall $call
      */
-    public function __construct(AnsweredCall $call, $forwardToNumber = null)
+    public function __construct(AnsweredCall $call)
     {
         $this->call = $call;
-        $this->forwardToNumber = $forwardToNumber;
     }
 
+    /**
+     * @return AnsweredCall
+     */
     public function getCall(): AnsweredCall
     {
         return $this->call;
     }
 
-    public function getForwardToNumber(): string
-    {
-        return $this->forwardToNumber;
-    }
-
+    /**
+     * @param string $xml
+     */
     public function setResponseXml($xml)
     {
         $this->responseXml = $xml;
     }
 
+    /**
+     * @return string
+     */
     public function getResponseXml(): string
     {
         return $this->responseXml;

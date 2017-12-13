@@ -55,6 +55,11 @@ class AnsweredCall
     protected $event;
 
     /**
+     * @var int
+     */
+    protected $entityId;
+
+    /**
      * AnsweredCall constructor.
      *
      * @param array $data
@@ -71,6 +76,38 @@ class AnsweredCall
         $this->requestUuid = $data['RequestUUID'] ?? '';
         $this->callStatus = $data['CallStatus'] ?? '';
         $this->event = $data['Event'] ?? '';
+    }
+
+    public function toArray()
+    {
+        return [
+            'direction' => $this->direction,
+            'from' => $this->from,
+            'aLegUuid' => $this->aLegUuid,
+            'billRate' => $this->billRate,
+            'to' => $this->to,
+            'callUuid' => $this->callUuid,
+            'aLegRequestUuid' => $this->aLegRequestUuid,
+            'requestUuid' => $this->requestUuid,
+            'callStatus' => $this->callStatus,
+            'event' => $this->event,
+        ];
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setEntityId($id)
+    {
+        $this->entityId = $id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEntityId(): int
+    {
+        return $this->entityId;
     }
 
     /**
@@ -152,6 +189,4 @@ class AnsweredCall
     {
         return $this->event;
     }
-
-
 }
