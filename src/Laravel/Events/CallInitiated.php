@@ -31,7 +31,7 @@ class CallInitiated
     /**
      * @return Call
      */
-    public function getCall()
+    public function getCall(): Call
     {
         return $this->call;
     }

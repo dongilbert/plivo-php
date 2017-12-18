@@ -19,7 +19,7 @@ class PlivoServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('plivo', function($app) {
-            return new Plivo(config('plivo.PLIVO_AUTH_ID'), config('plivo.PLIVO_AUTH_TOKEN'));
+            return new Plivo(config('plivo.AUTH_ID'), config('plivo.AUTH_TOKEN'));
         });
     }
 }

@@ -5,21 +5,44 @@ namespace Treblig\Plivo\Laravel\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Plivo;
+use Config;
 use Illuminate\Routing\Controller;
+use Treblig\Plivo\Exceptions\UnknownWebhookException;
 use Treblig\Plivo\Laravel\Events\CallAnswered;
 use Treblig\Plivo\Laravel\Events\CallInitiated;
 use Treblig\Plivo\Laravel\Events\RecordingReceived;
-use Treblig\Plivo\Response\Factory as ResponseFactory;
+use Treblig\Plivo\Laravel\WebhookHandler;
 
 class PlivoController extends Controller
 {
+    /**
+     * @var WebhookHandler
+     */
+    private $webhookHandler;
+
+    /**
+     * PlivoController constructor.
+     *
+     * @param WebhookHandler $handler
+     */
+    public function __construct(WebhookHandler $handler)
+    {
+        $this->webhookHandler = $handler;
+    }
+
+    /**
+     * Initiates the call with Plivo and fires a CallInitiated event.
+     *
+     * @param Request  $request
+     * @param int|null $id
+     */
     public function call(Request $request, int $id = null)
     {
         $args = [
-            'from' => $request->get('sender'),
+            'from' => config('plivo.PHONE_NUMBER'),
             'to' => $request->get('recipient'),
             'answer_url' => route(
-                'plivo.outbound.callback',
+                'plivo.webhook.receive',
                 [
                     'id' => $id
                 ]
@@ -28,35 +51,20 @@ class PlivoController extends Controller
 
         $call = Plivo::call($args);
 
+        $call->setEntityId($id);
+
         event(new CallInitiated($call, $args));
     }
 
     /**
-     * @return Response an XML Formatted Response
+     * @param Request  $request
+     * @param int|null $id
+     *
+     * @return mixed
+     * @throws UnknownWebhookException
      */
-    public function outboundCallback(Request $request, int $id = null)
+    public function receiveWebhook(Request $request, int $id = null)
     {
-        $answeredCall = ResponseFactory::make('answered_call', $request->all());
-
-        $answeredCall->setEntityId($id);
-
-        $event = new CallAnswered($answeredCall);
-
-        event($event);
-
-        return $event->getResponseXml();
-    }
-
-    /**
-     * @param Request $request
-     * @param string  $uuid
-     */
-    public function receiveRecording(Request $request, int $id = null)
-    {
-        $recording = ResponseFactory::make('recording', $request->all());
-
-        $recording->setEntityId($id);
-
-        event(new RecordingReceived($recording));
+        return $this->webhookHandler->handleRequest($request, $id);
     }
 }

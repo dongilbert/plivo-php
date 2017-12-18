@@ -4,7 +4,7 @@ namespace Treblig\Plivo\Laravel\Events;
 
 use Treblig\Plivo\Request\Call;
 
-class RecordingReceived
+class CallEnded
 {
     /**
      * @var Call
@@ -12,9 +12,9 @@ class RecordingReceived
     private $call;
 
     /**
-     * RecordingReceived constructor.
+     * CallEnded constructor.
      *
-     * @param Call $call
+     * @param Call  $call
      */
     public function __construct(Call $call)
     {

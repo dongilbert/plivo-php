@@ -6,27 +6,14 @@ use Treblig\Plivo\Exceptions\InvalidTypeException;
 
 class Factory
 {
-    private static $map = [
-        'make_call' => Call::class,
-        'answered_call' => AnsweredCall::class,
-        'recording' => Recording::class,
-    ];
-
     /**
-     * @param $type
+     * @param $responseClass
      * @param $data
      *
      * @return mixed
-     * @throws InvalidTypeException
      */
-    public static function make($type, $data)
+    public static function make($responseClass, $data)
     {
-        if (!array_key_exists($type, static::$map)) {
-            throw new InvalidTypeException($type);
-        }
-
-        $responseClass = static::$map[$type];
-
         if (!is_array($data)) {
             $data = json_decode($data, true);
         }

@@ -38,28 +38,8 @@ class Plivo
      */
     public function call(array $args): Call
     {
-        return $this->request('make_call', $args);
-    }
+        $response = $this->plivoApi->make_call($args);
 
-    /**
-     * @param       $plivoMethod
-     * @param array $args
-     *
-     * @return object
-     *
-     * @throws InvalidMethodException
-     * @throws InvalidTypeException
-     *
-     * @return mixed
-     */
-    private function request($plivoMethod, array $args)
-    {
-        if (!method_exists($this->plivoApi, $plivoMethod)) {
-            throw new InvalidMethodException($plivoMethod);
-        }
-
-        $response = $this->plivoApi->{$plivoMethod}($args);
-
-        return ResponseFactory::make($plivoMethod, $response['response']);
+        return ResponseFactory::make(Call::class, $response['response']);
     }
 }

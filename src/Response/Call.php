@@ -38,6 +38,9 @@ class Call
         $this->api_id = $data['api_id'] ?? '';
     }
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         return [
@@ -48,9 +51,17 @@ class Call
     }
 
     /**
+     * @return bool
+     */
+    public function didFire(): bool
+    {
+        return $this->getMessage() === static::FIRED;
+    }
+
+    /**
      * @param integer $id
      */
-    public function setEntityId($id)
+    public function setEntityId(int $id)
     {
         $this->entityId = $id;
     }
@@ -85,13 +96,5 @@ class Call
     public function getApiId(): string
     {
         return $this->api_id;
-    }
-
-    /**
-     * @return bool
-     */
-    public function didFire(): bool
-    {
-        return $this->getMessage() === static::FIRED;
     }
 }

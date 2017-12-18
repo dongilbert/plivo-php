@@ -2,12 +2,12 @@
 
 namespace Treblig\Plivo\Laravel\Events;
 
-use Treblig\Plivo\Response\AnsweredCall;
+use Treblig\Plivo\Request\Call;
 
 class CallAnswered
 {
     /**
-     * @var AnsweredCall
+     * @var Call
      */
     private $call;
 
@@ -17,19 +17,19 @@ class CallAnswered
     private $responseXml;
 
     /**
-     * CallAnswered constructor.
+     * RecordingReceived constructor.
      *
-     * @param AnsweredCall $call
+     * @param Call $call
      */
-    public function __construct(AnsweredCall $call)
+    public function __construct(Call $call)
     {
         $this->call = $call;
     }
 
     /**
-     * @return AnsweredCall
+     * @return Call
      */
-    public function getCall(): AnsweredCall
+    public function getCall(): Call
     {
         return $this->call;
     }
