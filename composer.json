@@ -1,5 +1,5 @@
 {
-    "name": "dongilbert/plivo-php",
+    "name": "treblig/plivo-php",
     "description": "PHP Package for the Plivo API. Extends the Plivo vendor API library.",
     "type": "library",
     "require": {
